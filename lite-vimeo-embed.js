@@ -2,13 +2,8 @@ const style = document.head.appendChild(document.createElement('style'));
 style.textContent = /*css*/`
 
   lite-vimeo {
-    // aspect-ratio: 16 / 9;
-    // background-color: #000;
-    // position: relative;
     display: block;
     contain: content;
-    // background-position: center center;
-    // background-size: cover;
     cursor: pointer;
     width: 100%;
     height: 100%;
