@@ -10,9 +10,9 @@ style.textContent = /*css*/`
     // background-position: center center;
     // background-size: cover;
     // cursor: pointer;
-     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    //  width: 100%;
+    // height: 100%;
+    // overflow: hidden;
   }
 
   lite-vimeo > iframe {
