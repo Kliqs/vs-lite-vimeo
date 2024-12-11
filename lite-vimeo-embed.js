@@ -114,32 +114,32 @@ class LiteVimeo extends (globalThis.HTMLElement ?? class {}) {
      * Lo, the vimeo placeholder image!  (aka the thumbnail, poster image, etc)
      * We have to use the Vimeo API.
      */
-    let { width, height } = getThumbnailDimensions(this.getBoundingClientRect());
-    let devicePixelRatio = window.devicePixelRatio || 1;
-    if (devicePixelRatio >= 2) devicePixelRatio *= .75;
-    width = Math.round(width * devicePixelRatio);
-    height = Math.round(height * devicePixelRatio);
+    // let { width, height } = getThumbnailDimensions(this.getBoundingClientRect());
+    // let devicePixelRatio = window.devicePixelRatio || 1;
+    // if (devicePixelRatio >= 2) devicePixelRatio *= .75;
+    // width = Math.round(width * devicePixelRatio);
+    // height = Math.round(height * devicePixelRatio);
 
-    fetch(`https://vimeo.com/api/v2/video/${this.videoId}.json`)
-      .then(response => response.json())
-      .then(data => {
-        let thumbnailUrl = data[0].thumbnail_large;
-        thumbnailUrl = thumbnailUrl.replace(/-d_[\dx]+$/i, `-d_${width}x${height}`);
-        this.style.backgroundImage = `url("${thumbnailUrl}")`;
-      });
+    // fetch(`https://vimeo.com/api/v2/video/${this.videoId}.json`)
+    //   .then(response => response.json())
+    //   .then(data => {
+    //     let thumbnailUrl = data[0].thumbnail_large;
+    //     thumbnailUrl = thumbnailUrl.replace(/-d_[\dx]+$/i, `-d_${width}x${height}`);
+    //     this.style.backgroundImage = `url("${thumbnailUrl}")`;
+    //   });
 
-    let playBtnEl = this.querySelector('.ltv-playbtn');
+    // let playBtnEl = this.querySelector('.ltv-playbtn');
     // A label for the button takes priority over a [playlabel] attribute on the custom-element
-    this.playLabel = (playBtnEl && playBtnEl.textContent.trim()) || this.getAttribute('playlabel') || 'Play video';
+    // this.playLabel = (playBtnEl && playBtnEl.textContent.trim()) || this.getAttribute('playlabel') || 'Play video';
 
-    if (!playBtnEl) {
-      playBtnEl = document.createElement('button');
-      playBtnEl.type = 'button';
-      playBtnEl.setAttribute('aria-label', this.playLabel);
-      playBtnEl.classList.add('ltv-playbtn');
-      this.append(playBtnEl);
-    }
-    playBtnEl.removeAttribute('href');
+    // if (!playBtnEl) {
+    //   playBtnEl = document.createElement('button');
+    //   playBtnEl.type = 'button';
+    //   playBtnEl.setAttribute('aria-label', this.playLabel);
+    //   playBtnEl.classList.add('ltv-playbtn');
+    //   this.append(playBtnEl);
+    // }
+    // playBtnEl.removeAttribute('href');
 
     // On hover (or tap), warm up the TCP connections we're (likely) about to use.
     this.addEventListener('pointerover', LiteVimeo._warmConnections, {
@@ -156,15 +156,20 @@ class LiteVimeo extends (globalThis.HTMLElement ?? class {}) {
     if (this.classList.contains('ltv-activated')) return;
     this.classList.add('ltv-activated');
 
+    this.videoLoop = this.getAttribute('videoloop');
+
+
     const iframeEl = document.createElement('iframe');
     iframeEl.width = 640;
     iframeEl.height = 360;
     // No encoding necessary as [title] is safe. https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html#:~:text=Safe%20HTML%20Attributes%20include
     iframeEl.title = this.playLabel;
     iframeEl.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+
+
     // AFAIK, the encoding here isn't necessary for XSS, but we'll do it only because this is a URL
     // https://stackoverflow.com/q/64959723/89484
-    iframeEl.src = `https://player.vimeo.com/video/${encodeURIComponent(this.videoId)}?autoplay=1`;
+    iframeEl.src = `https://player.vimeo.com/video/${encodeURIComponent(this.videoId)}?autoplay=1&controls=0&loop=${this.videoLoop??0}&playsinline=1`;
     this.append(iframeEl);
 
     // Set focus for a11y
