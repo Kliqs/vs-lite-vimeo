@@ -1,0 +1,24 @@
+{
+  "name": "vs-lite-video",
+  "version": "0.0.1",
+  "description": "A faster vimeo embed.",
+  "type": "module",
+  "main": "lite-vimeo-embed.js",
+  "files": [],
+  "scripts": {
+    "lint": "npx eslint *.js -c ./node_modules/wet-run/.eslintrc.json",
+    "dev": "wet serve"
+  },
+  "author": "",
+  "license": "MIT",
+  "repository": "vs-lite-video",
+  "homepage": "",
+  "keywords": [
+    "vimeo",
+    "custom element",
+    "web component"
+  ],
+  "devDependencies": {
+    "wet-run": "^0.5.1"
+  }
+}
